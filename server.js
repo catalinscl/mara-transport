@@ -1,6 +1,7 @@
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server pornit"));
+const express = require("express");
+const session = require("express-session");
 const bodyParser = require("body-parser");
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +23,7 @@ const users = [
 
 let loads = [];
 
+// LOGIN
 app.post("/login", (req, res) => {
   const user = users.find(
     (u) => u.email === req.body.email && u.password === req.body.password
@@ -34,10 +36,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/me", (req, res) => {
-  res.json(req.session.user || null);
-});
-
+// API
 app.get("/loads", (req, res) => {
   res.json(loads);
 });
@@ -47,25 +46,15 @@ app.post("/add-load", (req, res) => {
     return res.send("Nu ai acces");
   }
 
-  const newLoad = {
-    id: loads.length + 1,
+  loads.push({
     pickup: req.body.pickup,
     delivery: req.body.delivery,
     cargo: req.body.cargo,
-    weight: req.body.weight,
-    truck: req.body.truck,
-    date: req.body.date,
-    phone: "0711111111",
-    email: "office@mara.ro",
-  };
+  });
 
-  loads.push(newLoad);
   res.redirect("/dashboard.html");
 });
 
-app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/login.html");
-});
-
-app.listen(3000, () => console.log("Server rulând pe http://localhost:3000"));
+// ✅ PORT LA FINAL (CORECT)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server pornit"));
