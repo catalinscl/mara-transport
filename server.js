@@ -1,5 +1,5 @@
-const express = require("express");
-const session = require("express-session");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Server pornit"));
 const bodyParser = require("body-parser");
 const app = express();
 
