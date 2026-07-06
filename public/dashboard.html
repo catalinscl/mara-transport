@@ -1,37 +1,51 @@
 <!DOCTYPE html>
 <html>
 <body>
+
 <h2>Mărfuri disponibile</h2>
+
 <div id="loads"></div>
 
+<!-- FORMULAR DISPECER -->
 <div id="form" style="display:none;">
-<h3>Adaugă marfă</h3>
-<form method="POST" action="/add-load">
-<input name="pickup" placeholder="Încărcare"><br>
-<input name="delivery" placeholder="Descărcare"><br>
-<input name="cargo" placeholder="Marfă"><br>
-<input name="weight" placeholder="Greutate"><br>
-<input name="truck" placeholder="Camion"><br>
-<input name="date" type="date"><br>
-<button>Adaugă</button>
-</form>
+  <h3>Adaugă marfă</h3>
+
+  <form method="POST" action="/add-loadaceholder="Încărcare"><br>
+    <input name="delivery" placeholder="Descărcare"><br>
+    <input name="cargo" placeholder="Marfă"><br>
+    <input name="weight" placeholder="Greutate"><br>
+    <input name="truck" placeholder="Camion"><br>
+    <input name="date" type="date"><br>
+    <button>Adaugă</button>
+  </form>
 </div>
 
-<a href="/logout">Logout</a>
+<br>
+<a href="/out</a>
 
 <script>
-fetch('/me').then(res=>res.json()).then(user=>{
- if(user && user.role==='dispatcher'){
-  document.getElementById('form').style.display='block';
- }
+// verifică userul
+fetch('/me')
+.then(res => res.json())
+.then(user => {
+  if(user && user.role === "dispatcher"){
+    document.getElementById("form").style.display = "block";
+  }
 });
 
-fetch('/loads').then(res=>res.json()).then(data=>{
- const div=document.getElementById('loads');
- data.forEach(l=>{
-  div.innerHTML += `<hr>${l.pickup} → ${l.delivery}<br>Marfă: ${l.cargo}<br>`;
- });
-});
-</script>
-</body>
-</html>
+// arată marfa
+fetch('/loads')
+.then(res => res.json())
+.then(data => {
+  const div = document.getElementById("loads");
+
+  if(data.length === 0){
+    div.innerHTML = "Nu există marfă încă.";
+  }
+
+  data.forEach(l => {
+    div.innerHTML += `
+      <hr>
+      ${l.pickup} → ${l.delivery}<br>
+      Marfă: ${l.cargo}<br>
+      Greutate: ${l.weight}<br>
